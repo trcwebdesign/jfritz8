@@ -1,4 +1,8 @@
 # JFritz
+Works again with Call Log Fritz OS 8.0.2
+
+![2025-01-26 21 20 06](https://github.com/user-attachments/assets/d7bad577-efe4-404d-b24f-d01e0855b0c7)
+
 
 # Build
 We use maven for building. Just use ```mvn clean install``` and all files will be build into *target/dist* folder.
