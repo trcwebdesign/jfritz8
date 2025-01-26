@@ -84,13 +84,13 @@ public class CallerList extends AbstractTableModel
 	private final static String EXPORT_CSV_FORMAT_FRITZBOX = "Typ;Datum;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer"; //$NON-NLS-1$
 
 	// is the type exported from the new firmware
-	private final static String EXPORT_CSV_FORMAT_FRITZBOX_NEWFIRMWARE = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer";
+	private final static String EXPORT_CSV_FORMAT_FRITZBOX_NEWFIRMWARE = "Typ;Datum;Name;Rufnummer;Landes-/Ortsnetzbereich;Nebenstelle;Eigene Rufnummer;Dauer";
 
 	// Is the type eyported from a 7170
-	private final static String EXPORT_CSV_FORMAT_PUSHSERVICE = "Typ; Datum; Rufnummer; Nebenstelle; Eigene Rufnummer; Dauer"; //$NON-NLS-1$
+	private final static String EXPORT_CSV_FORMAT_PUSHSERVICE = "Typ; Datum; Rufnummer; Landes-/Ortsnetzbereich; Nebenstelle; Eigene Rufnummer; Dauer"; //$NON-NLS-1$
 
 	// is the type exported from a 7170 with a >= XX.04.12
-	private final static String EXPORT_CSV_FORMAT_PUSHSERVICE_NEW = "Typ; Datum; Name; Rufnummer; Nebenstelle; Eigene Rufnummer; Dauer";
+	private final static String EXPORT_CSV_FORMAT_PUSHSERVICE_NEW = "Typ; Datum; Name; Rufnummer; Landes-/Ortsnetzbereich; Nebenstelle; Eigene Rufnummer; Dauer";
 
 	private final static String EXPORT_CSV_FORMAT_PUSHSERVICE_ENGLISH = "Type; Date; Number; Extension; Local Number; Duration";
 
@@ -157,7 +157,7 @@ public class CallerList extends AbstractTableModel
 	 * CallerListListeners are used to passively catch changes to the
 	 * data in the call list
 	 *
-	 * @param l the listener to be added
+	 * @param listener the listener to be added
 	 */
 	public synchronized void addListener(final CallerListListener listener){
 		callListListeners.add(listener);
@@ -167,7 +167,7 @@ public class CallerList extends AbstractTableModel
 	 * CallerListListeners are used to passively catch changes to the
 	 * data in the call list
 	 *
-	 * @param l the listener to be removed
+	 * @param listener the listener to be removed
 	 */
 	public synchronized void removeListener(final CallerListListener listener){
 		callListListeners.remove(listener);
@@ -1053,11 +1053,12 @@ public class CallerList extends AbstractTableModel
 			csvImport.mapColumn(1, CallerTable.COLUMN_DATE);
 			csvImport.mapColumn(2, CallerTable.COLUMN_DATE);
 			csvImport.mapColumn(3, CallerTable.COLUMN_NUMBER);
-			csvImport.mapColumn(4, CallerTable.COLUMN_ROUTE);
-			csvImport.mapColumn(5, CallerTable.COLUMN_PORT);
-			csvImport.mapColumn(6, CallerTable.COLUMN_DURATION);
-			csvImport.mapColumn(10, CallerTable.COLUMN_CALL_BY_CALL);
-			csvImport.mapColumn(11, CallerTable.COLUMN_COMMENT);
+			csvImport.mapColumn(4, CallerTable.COLUMN_LKZ);
+			csvImport.mapColumn(5, CallerTable.COLUMN_ROUTE);
+			csvImport.mapColumn(6, CallerTable.COLUMN_PORT);
+			csvImport.mapColumn(7, CallerTable.COLUMN_DURATION);
+			csvImport.mapColumn(11, CallerTable.COLUMN_CALL_BY_CALL);
+			csvImport.mapColumn(12, CallerTable.COLUMN_COMMENT);
 		} else if (firstLine.startsWith("sep=")) {
 			String[] split = firstLine.split("=");
 			log.debug("Found separator: " + split[1]);
@@ -1075,17 +1076,19 @@ public class CallerList extends AbstractTableModel
 				csvImport.mapColumn(0, CallerTable.COLUMN_TYPE);
 				csvImport.mapColumn(1, CallerTable.COLUMN_DATE);
 				csvImport.mapColumn(3, CallerTable.COLUMN_NUMBER);
-				csvImport.mapColumn(4, CallerTable.COLUMN_PORT);
-				csvImport.mapColumn(5, CallerTable.COLUMN_ROUTE);
-				csvImport.mapColumn(6, CallerTable.COLUMN_DURATION);
+				csvImport.mapColumn(4, CallerTable.COLUMN_LKZ);
+				csvImport.mapColumn(5, CallerTable.COLUMN_PORT);
+				csvImport.mapColumn(6, CallerTable.COLUMN_ROUTE);
+				csvImport.mapColumn(7, CallerTable.COLUMN_DURATION);
 			}
 		} else if (firstLine.equals(EXPORT_CSV_FORMAT_JANRUFMONITOR)) {
 			// away;20.08.2009 12:28;+49 (152) number;Name;MSN;27 min ;
 			csvImport.mapColumn(0, CallerTable.COLUMN_TYPE);
 			csvImport.mapColumn(1, CallerTable.COLUMN_DATE);
 			csvImport.mapColumn(2, CallerTable.COLUMN_NUMBER);
-			csvImport.mapColumn(4, CallerTable.COLUMN_ROUTE);
-			csvImport.mapColumn(5, CallerTable.COLUMN_DURATION);
+			csvImport.mapColumn(3, CallerTable.COLUMN_LKZ);
+			csvImport.mapColumn(5, CallerTable.COLUMN_ROUTE);
+			csvImport.mapColumn(6, CallerTable.COLUMN_DURATION);
 		}
 		csvImport.csvImport();
 		csvImport.closeFile();
@@ -1581,8 +1584,6 @@ public class CallerList extends AbstractTableModel
 	 *
 	 * @param cf
 	 *            the CallFilter which should be applied
-	 * @param name
-	 *            the name of the Filter
 	 */
 	public void addFilter(CallFilter cf) {
 		filters.add(cf);
@@ -1592,8 +1593,8 @@ public class CallerList extends AbstractTableModel
 	/**
 	 * removes a Filter
 	 *
-	 * @param name
-	 *            the name of the Filter
+	 * @param cf
+	 *            the CallFilter which should be applied
 	 * @return true if the filter was removed
 	 */
 	public boolean removeFilter(CallFilter cf) {
@@ -1740,7 +1741,7 @@ public class CallerList extends AbstractTableModel
 	 *
 	 * @param filteredOnly
 	 *            if false it will lookup all calls
-	 * @param searchAlsoDummyEntries
+	 * @param searchAlsoForDummyEntries
 	 *            if true, it will also lookup dummy entries
 	 * @return
 	 */

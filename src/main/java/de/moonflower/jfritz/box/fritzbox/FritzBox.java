@@ -914,7 +914,12 @@ public class FritzBox extends BoxClass {
 		if (fbTR064 != null) {
 			Service service = fbTR064.getService("WANPPPConnection:1");
 			Action action = service.getAction("GetInfo");
-			Response r = synchronizedTR064Call(action);
+			Response r = null;
+			try {
+				r = synchronizedTR064Call(action);
+			} catch (UnauthorizedException e) {
+				e.printStackTrace();
+			}
 			String dnsServers = r.getValueAsString("NewDNSServers");
 			if (dnsServers.contains(",")) {
 				String[] splitted = dnsServers.split(",");
@@ -929,18 +934,31 @@ public class FritzBox extends BoxClass {
 		if (fbTR064 != null) {
 			Service service = fbTR064.getService("WANCommonInterfaceConfig:1");
 			Action action = service.getAction("GetTotalBytesReceived");
-			Response r = synchronizedTR064Call(action);
+			Response r = null;
+			try {
+				r = synchronizedTR064Call(action);
+			} catch (UnauthorizedException e) {
+				e.printStackTrace();
+			}
 			String bytesReceived = r.getValueAsString("NewTotalBytesReceived");
 
 			action = service.getAction("GetTotalBytesSent");
-			r = synchronizedTR064Call(action);
+			try {
+				r = synchronizedTR064Call(action);
+			} catch (UnauthorizedException e) {
+				e.printStackTrace();
+			}
 			String bytesSent = r.getValueAsString("NewTotalBytesSent");
 			listener.setTotalBytesInfo(bytesSent, bytesReceived);
 
 			Map<String, Object> arguments = new HashMap<String, Object>();
 			arguments.put("NewSyncGroupIndex", 0);
 			action = service.getAction("X_AVM-DE_GetOnlineMonitor");
-			r = synchronizedTR064Call(action, arguments);
+			try {
+				r = synchronizedTR064Call(action, arguments);
+			} catch (UnauthorizedException e) {
+				e.printStackTrace();
+			}
 			String upstreamBps = r.getValueAsString("Newus_current_bps");
 			String downstreamBps = r.getValueAsString("Newds_current_bps");
 
@@ -970,7 +988,12 @@ public class FritzBox extends BoxClass {
 			Action action = service.getAction("GetInfo");
 
 			try {
-				Response r = synchronizedTR064Call(action);
+				Response r = null;
+				try {
+					r = synchronizedTR064Call(action);
+				} catch (UnauthorizedException e) {
+					e.printStackTrace();
+				}
 				String uptime = r.getValueAsString("NewUptime");
 				listener.setUptime(uptime);
 			} catch (IOException e) {
@@ -996,7 +1019,12 @@ public class FritzBox extends BoxClass {
 			Action action = service.getAction("GetExternalIPAddress");
 
 			try {
-				Response r = synchronizedTR064Call(action);
+				Response r = null;
+				try {
+					r = synchronizedTR064Call(action);
+				} catch (UnauthorizedException e) {
+					e.printStackTrace();
+				}
 				String ip = r.getValueAsString("NewExternalIPAddress");
 				listener.setExternalIp(ip);
 			} catch (IOException e) {
@@ -1019,7 +1047,12 @@ public class FritzBox extends BoxClass {
 			Action action = service.getAction("GetInfo");
 
 			try {
-				Response r = synchronizedTR064Call(action);
+				Response r = null;
+				try {
+					r = synchronizedTR064Call(action);
+				} catch (UnauthorizedException e) {
+					e.printStackTrace();
+				}
 				String downstreamCurrRate = r.getValueAsString("NewDownstreamCurrRate");
 				String upstreamCurrRate = r.getValueAsString("NewUpstreamCurrRate");
 
@@ -1492,7 +1525,12 @@ public class FritzBox extends BoxClass {
 			Action action = service.getAction("GetInfo");
 
 			try {
-				Response r = synchronizedTR064Call(action);
+				Response r = null;
+				try {
+					r = synchronizedTR064Call(action);
+				} catch (UnauthorizedException e) {
+					e.printStackTrace();
+				}
 				return r.getValueAsBoolean("NewEnabled");
 			} catch (IOException e) {
 				log.error(messages.getMessage("box.could_not_get_status_from_UPNP") + e.getMessage());
@@ -1514,7 +1552,12 @@ public class FritzBox extends BoxClass {
 			Action action = service.getAction("X_AVM-DE_DialGetConfig");
 
 			try {
-				Response r = synchronizedTR064Call(action);
+				Response r = null;
+				try {
+					r = synchronizedTR064Call(action);
+				} catch (UnauthorizedException e) {
+					e.printStackTrace();
+				}
 				return r.getValueAsString("NewX_AVM-DE_PhoneName");
 			} catch (IOException e) {
 				log.error(messages.getMessage("box.could_not_get_status_from_UPNP") + e.getMessage());
@@ -1528,11 +1571,11 @@ public class FritzBox extends BoxClass {
 		}
 	}
 
-	private Response synchronizedTR064Call(final Action action) throws IOException {
+	private Response synchronizedTR064Call(final Action action) throws IOException, UnauthorizedException {
 		return synchronizedTR064Call(action, (Map) null);
 	}
 
-	private Response synchronizedTR064Call(final Action action, final Map<String, Object> arguments) throws IOException {
+	private Response synchronizedTR064Call(final Action action, final Map<String, Object> arguments) throws IOException, UnauthorizedException {
 		synchronized (this) {
 			return action.execute(arguments);
 		}

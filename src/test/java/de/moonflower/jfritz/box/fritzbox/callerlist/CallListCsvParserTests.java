@@ -23,7 +23,7 @@ import de.moonflower.jfritz.struct.CallType;
 public class CallListCsvParserTests {
 
 	private static final String CSV_SEPARATOR = "sep=;\n";
-	private static final String CSV_HEADER = "Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer\n";
+	private static final String CSV_HEADER = "Typ;Datum;Name;Rufnummer;Landes-/Ortsnetzbereich;Nebenstelle;Eigene Rufnummer;Dauer\n";
 	private CallListCsvParser parser;
 	@Mock private FritzBox mockedFritzBox;
 
@@ -94,7 +94,7 @@ public class CallListCsvParserTests {
 		StringBuilder sb = new StringBuilder();
 		sb.append(CSV_SEPARATOR);
 		sb.append(CSV_HEADER);
-		sb.append("2;25.12.12 17:45;;0123456789;;Internet: 12345678;0:07");
+		sb.append("2;25.12.12 17:45;;0123456789;;;Internet: 12345678;0:07");
 		Vector<Call> calls = parser.parseCsvString(mockedFritzBox, sb.toString());
 
 		// verify

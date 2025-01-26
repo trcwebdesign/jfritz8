@@ -39,9 +39,9 @@ public class CallListCsvLineParser {
 		}
 
 		String[] splitted = line.split(separator);
-		if (splitted.length != 7) {
+		if (splitted.length != 8) {
 			// Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer
-			log.error("CallListCsvLineParser: Expected 7 columns but got: " + splitted.length + " for line: " + line);
+			log.error("CallListCsvLineParser: Expected 8 columns but got: " + splitted.length + " for line: " + line);
 			throw new FeatureNotSupportedByFirmware("Get caller list", messages.getMessage("box.no_caller_list"));
 		}
 
@@ -53,9 +53,9 @@ public class CallListCsvLineParser {
 		CallType calltype = parseCallType(fritzBox, splitted[0]);
 		Date calldate = parseCallDate(splitted[1]);
 		PhoneNumberOld number = parsePhoneNumber(calltype, splitted[3]);
-		Port port = parsePort(fritzBox, splitted[4]);
-		String route = parseRoute(fritzBox, splitted[5]);
-		String[] time = parseTime(splitted[6]);
+		Port port = parsePort(fritzBox, splitted[5]);
+		String route = parseRoute(fritzBox, splitted[6]);
+		String[] time = parseTime(splitted[7]);
 
 		return new Call(calltype, calldate, number, port, route,
 				Integer.parseInt(time[0]) * 3600 + Integer.parseInt(time[1])

@@ -1,9 +1,6 @@
 package de.moonflower.jfritz.box.tr064.fritzbox;
 
-import de.bausdorf.avm.tr064.Action;
-import de.bausdorf.avm.tr064.FritzConnection;
-import de.bausdorf.avm.tr064.Response;
-import de.bausdorf.avm.tr064.Service;
+import de.bausdorf.avm.tr064.*;
 
 import java.io.IOException;
 
@@ -18,7 +15,12 @@ public class DetectFirmware {
             if (service != null) {
                 Action action = service.getAction("GetInfo");
                 if (action != null) {
-                    Response response1 = action.execute();
+                    Response response1 = null;
+                    try {
+                        response1 = action.execute();
+                    } catch (UnauthorizedException e) {
+                        e.printStackTrace();
+                    }
                     if (response1 != null) {
                         try {
                             fritzBoxName = response1.getValueAsString("NewModelName");

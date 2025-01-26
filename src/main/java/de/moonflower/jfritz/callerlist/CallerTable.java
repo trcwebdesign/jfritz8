@@ -59,6 +59,7 @@ public class CallerTable extends JTable {
 	public static final String COLUMN_DATE = "date";
 	public static final String COLUMN_DURATION = "duration";
 	public static final String COLUMN_NUMBER = "number";
+	public static final String COLUMN_LKZ = "lkz";
 	public static final String COLUMN_PARTICIPANT = "participant";
 	public static final String COLUMN_PICTURE = "picture";
 	public static final String COLUMN_PORT = "port";

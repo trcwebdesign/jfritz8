@@ -1,9 +1,6 @@
 package de.moonflower.jfritz.box.tr064.fritzbox;
 
-import de.bausdorf.avm.tr064.Action;
-import de.bausdorf.avm.tr064.FritzConnection;
-import de.bausdorf.avm.tr064.Response;
-import de.bausdorf.avm.tr064.Service;
+import de.bausdorf.avm.tr064.*;
 
 import java.io.IOException;
 
@@ -26,7 +23,12 @@ public class DetectLoginMethod {
             if (service != null) {
                 Action action = service.getAction(ACTION_GET_ANONYMOUS_LOGIN);
                 if (action != null) {
-                    Response response1 = action.execute();
+                    Response response1 = null;
+                    try {
+                        response1 = action.execute();
+                    } catch (UnauthorizedException e) {
+                        e.printStackTrace();
+                    }
                     if (response1 != null) {
                         try {
                             anonymousLogin = response1.getValueAsBoolean(PROPERTY_ANONYMOUS_LOGIN_ENABLED);
@@ -46,7 +48,12 @@ public class DetectLoginMethod {
                     action = service.getAction(ACTION_GET_CURRENT_USER);
                     if (action != null) {
                         try {
-                            Response response1 = action.execute();
+                            Response response1 = null;
+                            try {
+                                response1 = action.execute();
+                            } catch (UnauthorizedException e) {
+                                e.printStackTrace();
+                            }
                             if (response1 != null) {
                                 try {
                                     userRights = response1.getValueAsString(PROPERTY_CURRENT_USER_RIGHTS);

@@ -31,6 +31,6 @@ public class PlaySoundTest {
 	@Test
 	public void testPlayFile() {
 		PlaySound ps = new PlaySound(sp);
-		ps.playSound(new File("/home/robotniko/workspace/jfritz/src/de/moonflower/jfritz/resources/sounds/call_in.wav"));
+		ps.playSound(getClass().getClassLoader().getResource("sounds/call_in.wav"));
 	}
 }

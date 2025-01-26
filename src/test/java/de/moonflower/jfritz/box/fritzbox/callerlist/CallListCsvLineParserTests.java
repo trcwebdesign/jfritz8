@@ -58,17 +58,17 @@ public class CallListCsvLineParserTests {
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
 	public void testTooFewColumns() throws FeatureNotSupportedByFirmware {
-		parser.parseLine(mockedFritzBox, "1;2;3;4;5;6");
+		parser.parseLine(mockedFritzBox, "1;2;3;4;5;6;7");
 	}
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
 	public void testTooMuchColumns() throws FeatureNotSupportedByFirmware {
-		parser.parseLine(mockedFritzBox, "1;2;3;4;5;6;7;8");
+		parser.parseLine(mockedFritzBox, "1;2;3;4;5;6;7;8;9");
 	}
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
 	public void fritzBoxNull() throws FeatureNotSupportedByFirmware {
-		parser.parseLine(null, "0;00.12.12 19:27;;07211234567;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
+		parser.parseLine(null, "0;00.12.12 19:27;;07211234567;;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
 	}
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
@@ -79,7 +79,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		parser.parseLine(mockedFritzBox, "0;06.12.12 19:27;;07211234567;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
+		parser.parseLine(mockedFritzBox, "0;06.12.12 19:27;;07211234567;;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
 	}
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
@@ -90,7 +90,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		parser.parseLine(mockedFritzBox, "0;00.12.12 19:27;;07211234567;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
+		parser.parseLine(mockedFritzBox, "0;00.12.12 19:27;;07211234567;;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
 	}
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
@@ -101,7 +101,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		parser.parseLine(mockedFritzBox, "0;01.12.12;;07211234567;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
+		parser.parseLine(mockedFritzBox, "0;01.12.12;;07211234567;;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "2;25.12.12 17:45;;0123456789;;Internet: 12345678;0:00");
+		Call call = parser.parseLine(mockedFritzBox, "2;25.12.12 17:45;;0123456789;;;Internet: 12345678;0:00");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -134,7 +134,7 @@ public class CallListCsvLineParserTests {
 		parser.messages = mockedMessages;
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "2;25.12.12 17:45;;0123456789;;;0:00");
+		Call call = parser.parseLine(mockedFritzBox, "2;25.12.12 17:45;;0123456789;;;;0:00");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -159,7 +159,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getFirmware()).thenReturn(new FirmwareVersion(01,(byte)05,(byte)50));
 		
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "3;25.12.12 17:45;;0123456789;;Internet: 12345678;0:00");
+		Call call = parser.parseLine(mockedFritzBox, "3;25.12.12 17:45;;0123456789;;;Internet: 12345678;0:00");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -194,7 +194,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "4;06.12.12 19:27;;07211234567;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
+		Call call = parser.parseLine(mockedFritzBox, "4;06.12.12 19:27;;07211234567;;FRITZ!App Fon Nexus 10;Internet: 12345678;0:01");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -217,7 +217,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;Internet: 12345678;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;Internet: 12345678;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -239,7 +239,7 @@ public class CallListCsvLineParserTests {
 		parser.messages = mockedMessages;
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -262,7 +262,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;Name;072198765432;SIEMENS;Internet: 12345678;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;Name;072198765432;;SIEMENS;Internet: 12345678;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -282,7 +282,7 @@ public class CallListCsvLineParserTests {
 		// preconditions
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;12345678;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;12345678;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -304,7 +304,7 @@ public class CallListCsvLineParserTests {
 		parser.messages = mockedMessages;
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -327,7 +327,7 @@ public class CallListCsvLineParserTests {
 		parser.messages = mockedMessages;
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;Internet: 12345678;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;Internet: 12345678;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -350,7 +350,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678@abc.com")).thenReturn(mockedSipProvider);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;12345678@abc.com;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;12345678@abc.com;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -372,7 +372,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getConfiguredPort(1)).thenReturn(mockedPort);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;1;12345678;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;1;12345678;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -393,7 +393,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getConfiguredPort(0)).thenReturn(null);
 
 		// test
-		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;0;12345678;1:25");
+		Call call = parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;0;12345678;1:25");
 
 		// verify
 		Assert.assertNotNull(call);
@@ -427,7 +427,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;Internet: 12345678;a:05");
+		parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;Internet: 12345678;a:05");
 	}
 
 	@Test(expected=FeatureNotSupportedByFirmware.class)
@@ -438,7 +438,7 @@ public class CallListCsvLineParserTests {
 		when(mockedFritzBox.getSipProviderByRoute("12345678")).thenReturn(mockedSipProvider);
 
 		// test
-		parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;SIEMENS;Internet: 12345678;1:ab");
+		parser.parseLine(mockedFritzBox, "1;02.12.12 21:55;;072198765432;;SIEMENS;Internet: 12345678;1:ab");
 	}
 
 }

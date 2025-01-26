@@ -133,13 +133,22 @@ public class DetectFritzConnection {
     private int getSecurityPort(String scheme, int port) throws IOException {
         try {
             FritzConnection fc = new FritzConnection(scheme, address, port, user, password);
-            fc.init(null);
+            try {
+                fc.init(null);
+            } catch (UnauthorizedException e) {
+                e.printStackTrace();
+            }
 
             Service service = fc.getService("DeviceInfo:1");
             if (service != null) {
                 Action action = service.getAction("GetSecurityPort");
                 if (action != null) {
-                    Response response1 = action.execute();
+                    Response response1 = null;
+                    try {
+                        response1 = action.execute();
+                    } catch (UnauthorizedException e) {
+                        e.printStackTrace();
+                    }
                     if (response1 != null) {
                         return response1.getValueAsInteger("NewSecurityPort");
                     }
@@ -175,7 +184,12 @@ public class DetectFritzConnection {
     private boolean testSchemeAndPort(String scheme, int port) {
         try {
             FritzConnection fc = new FritzConnection(scheme, address, port);
-            InputStream xml = fc.getXMLIS("/tr64desc.xml");
+            InputStream xml = null;
+            try {
+                xml = fc.getXMLIS("/tr64desc.xml");
+            } catch (UnauthorizedException e) {
+                e.printStackTrace();
+            }
             int available = xml.available();
             if (available > 0) {
                 return true;
@@ -196,7 +210,12 @@ public class DetectFritzConnection {
             if (service != null) {
                 Action action = service.getAction("X_AVM-DE_GetCurrentUser");
                 if (action != null) {
-                    Response response1 = action.execute();
+                    Response response1 = null;
+                    try {
+                        response1 = action.execute();
+                    } catch (UnauthorizedException e) {
+                        e.printStackTrace();
+                    }
                     if (response1 != null) {
                         try {
                             currentUser = response1.getValueAsString("NewX_AVM-DE_CurrentUsername");
@@ -227,7 +246,12 @@ public class DetectFritzConnection {
             if (service != null) {
                 Action action = service.getAction("GetInfo");
                 if (action != null) {
-                    Response response1 = action.execute();
+                    Response response1 = null;
+                    try {
+                        response1 = action.execute();
+                    } catch (UnauthorizedException e) {
+                        e.printStackTrace();
+                    }
                     if (response1 != null) {
                         try {
                             twoFactor = response1.getValueAsBoolean("NewEnabled");
@@ -255,7 +279,12 @@ public class DetectFritzConnection {
             if (service != null) {
                 Action action = service.getAction("X_AVM-DE_DialGetConfig");
                 if (action != null) {
-                    Response response1 = action.execute();
+                    Response response1 = null;
+                    try {
+                        response1 = action.execute();
+                    } catch (UnauthorizedException e) {
+                        e.printStackTrace();
+                    }
                     if (response1 != null) {
                         try {
                             dialPort = response1.getValueAsString("NewX_AVM-DE_PhoneName");

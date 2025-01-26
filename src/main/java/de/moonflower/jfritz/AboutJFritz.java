@@ -59,14 +59,14 @@ public class AboutJFritz extends JDialog implements ActionListener {
 
 		GridBagConstraints gbc = new GridBagConstraints();
 
-		JLabel version = new JLabel("Version: " + ProgramConstants.PROGRAM_VERSION);
+		JLabel version = new JLabel("Version8: " + ProgramConstants.PROGRAM_VERSION);
 		JLabel revision = new JLabel("Revision: " + ProgramConstants.REVISION);
 		JLabel buildDate = new JLabel("Build: " + ProgramConstants.BUILD_DATE);
 		JLabel newLine = new JLabel(" ");
 		JLabel admin = new JLabel("Project-admin: Robert Palmer <robert@jfritz.org>");
 		JLabel initiator = new JLabel("Project-initiator: Arno Willig <akw@thinkwiki.org>");
 		JLabel newLine2 = new JLabel(" ");
-		JLabel copyright = new JLabel("(c) 2005 - " + cal.get(Calendar.YEAR) + " by all members of the JFritz-Team");
+		JLabel copyright = new JLabel("(c) 2005 - " + cal.get(Calendar.YEAR) + " by all members of the JFritz-Team + TRC for Firmware8");
 		JLabel newLine3 = new JLabel(" ");
 		JLabel gnu1 = new JLabel("This tool is developed and released under");
 		JLabel gnu2 = new JLabel("the terms of the GNU General Public License");
